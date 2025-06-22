@@ -26,9 +26,6 @@ values.yaml
 *.kustomize.yaml
 kustomization.yaml
 
-# Generated manifests (optional)
-*.yaml
-*.yml
 
 # Docker image artifacts
 *.tar
