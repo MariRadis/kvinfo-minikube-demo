@@ -1,12 +1,15 @@
 
 # KVInfoSysBund Minikube Demo (Full Stack)
 
+This project demonstrates a real-world Kubernetes setup with frontend/backend/database communication, CI/CD potential, 
+and full local deployability using Minikube.
+
 This is a Kubernetes deployment of a full-stack sample application using **Minikube**. It includes:
 
 - ✅ A real **frontend** served via NGINX
 - ✅ A **Node.js backend** API connecting to Postgres
 - ✅ A running **PostgreSQL** database
-- ✅ Ingress routing for `/frontend` and `/api`
+- ✅ Ingress routing for `/frontend` 
 
 ---
 
@@ -19,12 +22,12 @@ This is a Kubernetes deployment of a full-stack sample application using **Minik
 
 ## 📦 Components
 
-| Component | Tech                  | Description                              |
-|----------|------------------------|------------------------------------------|
-| Frontend | HTML + JS + NGINX      | Calls `/api/message`                     |
-| Backend  | Node.js + Express      | Connects to PostgreSQL                   |
-| Database | PostgreSQL 15          | Responds with static SQL message         |
-| Ingress  | Minikube + NGINX       | Routes traffic to services               |
+| Component | Tech                  | Description                        |
+|----------|------------------------|------------------------------------|
+| Frontend | HTML + JS + NGINX      | Calls `/api/message`               |
+| Backend  | Node.js + Express      | Connects to PostgreSQL             |
+| Database | PostgreSQL 15          | Responds with static SQL message   |
+| Ingress  | Minikube + NGINX       | Routes traffic to frontend service |
 
 ---
 
@@ -87,7 +90,7 @@ Then visit:
 
 ---
 
-## 🧪 Teardown
+## 6. 🧪 Teardown
 
 ```bash
 ./teardown.sh
@@ -110,6 +113,3 @@ kvinfo-minikube-demo/
 
 ---
 
-## 🧠 Summary
-
-This project demonstrates a real-world Kubernetes setup with frontend/backend/database communication, CI/CD potential, and full local deployability using Minikube.
