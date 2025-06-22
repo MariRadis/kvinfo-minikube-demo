@@ -14,17 +14,10 @@ spec:
         app: frontend
     spec:
       containers:
-      - name: nginx
-        image: nginx:alpine
+      - name: frontend
+        image: kvinfo/frontend
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: html
-          mountPath: /usr/share/nginx/html
-      volumes:
-      - name: html
-        configMap:
-          name: frontend-html
 ---
 apiVersion: v1
 kind: Service

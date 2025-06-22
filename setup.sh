@@ -1,14 +1,22 @@
 #!/bin/bash
 set -e
 
-echo "🔧 Starting Minikube..."
+echo "🐳 Using Minikube Docker environment..."
+eval $(minikube docker-env)
+
+echo "🔨 Building frontend image..."
+docker build -t kvinfo/frontend ./frontend
+
+echo "🔨 Building backend image..."
+docker build -t kvinfo/backend ./backend
+
+echo "🚀 Starting Minikube..."
 minikube start --driver=docker
 
 echo "✅ Enabling Ingress addon..."
 minikube addons enable ingress
 
 echo "📦 Applying Kubernetes manifests..."
-kubectl apply -f k8s-manifests/frontend-configmap.yaml
 kubectl apply -f k8s-manifests/frontend.yaml
 kubectl apply -f k8s-manifests/backend.yaml
 kubectl apply -f k8s-manifests/db.yaml
@@ -24,4 +32,4 @@ fi
 
 echo "🚀 Deployment complete. Visit:"
 echo "   http://kvinfo.local/frontend"
-echo "   http://kvinfo.local/backend"
+echo "   http://kvinfo.local/api/message"
