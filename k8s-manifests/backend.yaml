@@ -33,6 +33,7 @@ kind: Service
 metadata:
   name: backend
 spec:
+  type: ClusterIP #Accessible from other pods (e.g., curl http://backend)
   selector:
     app: backend
   ports:
