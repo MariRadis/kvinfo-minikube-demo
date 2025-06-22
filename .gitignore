@@ -1,0 +1,57 @@
+# ─────────────────────────────
+# Kubernetes & Minikube
+# ─────────────────────────────
+
+# Kubernetes config and cache
+.kube/
+.kube/config
+.kube/cache/
+
+# Minikube
+.minikube/
+minikube-hosts
+minikube-*
+
+# Helm
+*.tgz
+charts/
+tmpcharts/
+Chart.lock
+values.yaml
+
+# Skaffold
+.skaffold/
+
+# Kustomize build artifacts (if generated)
+*.kustomize.yaml
+kustomization.yaml
+
+# Generated manifests (optional)
+*.yaml
+*.yml
+
+# Docker image artifacts
+*.tar
+*.img
+
+# ─────────────────────────────
+# Terraform (if used)
+# ─────────────────────────────
+
+.terraform/
+terraform.tfstate*
+*.tfplan
+*.tfvars
+crash.log
+
+# ─────────────────────────────
+# IntelliJ IDEA
+# ─────────────────────────────
+
+.idea/
+*.iml
+*.iws
+out/
+
+# ─────────────────────────────
+# V
