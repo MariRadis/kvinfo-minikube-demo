@@ -43,6 +43,19 @@ echo "$(minikube ip) kvinfo.local" | sudo tee -a /etc/hosts
 - [http://kvinfo.local/frontend](http://kvinfo.local/frontend)
 - [http://kvinfo.local/backend](http://kvinfo.local/backend)
 
+
+
+### 5. Tier down clean up everything
+
+Deletes the Minikube cluster
+Removes the kvinfo.local entry from /etc/hosts
+
+How to Use
+```bash
+cd kvinfo-minikube-demo
+./teardown.sh
+```
+
 ## 🚀 GitHub Actions
 
 Included `.github/workflows/minikube.yml` runs the deployment inside a GitHub Actions CI pipeline using Minikube.
