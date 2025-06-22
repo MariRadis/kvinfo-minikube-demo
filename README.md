@@ -11,14 +11,11 @@ This is a Kubernetes deployment of a full-stack sample application using **Minik
 ---
 
 ## 🧱 Architecture
-
-```
-Frontend (NGINX) <--calls-- Backend (Express.js) <--queries-- PostgreSQL
-        |                          |                        |
-     Ingress                   Service                  Persistent Pod
-```
-
+![architecture_diagram.png](docs/architecture_diagram.png)
 ---
+
+## 🏗️ Infrastructure
+![infrastructure_diagram.png](docs/infrastructure_diagram.png)
 
 ## 📦 Components
 
