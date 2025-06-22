@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KVInfo Frontend</title>
+  <script>
+    async function fetchMessage() {
+      const res = await fetch("/api/message");
+      const data = await res.json();
+      document.getElementById("message").innerText = data.message;
+    }
+  </script>
+</head>
+<body onload="fetchMessage()">
+  <h1>KVInfoSysBund Frontend</h1>
+  <p>Backend says: <span id="message">Loading...</span></p>
+</body>
+</html>

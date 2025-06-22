@@ -1,77 +1,118 @@
 
-# KVInfoSysBund Minikube Demo
+# KVInfoSysBund Minikube Demo (Full Stack)
 
-This is a minimal Kubernetes deployment of a sample web application, for local testing using Minikube.
+This is a Kubernetes deployment of a full-stack sample application using **Minikube**. It includes:
 
-## 🔧 Components
+- ✅ A real **frontend** served via NGINX
+- ✅ A **Node.js backend** API connecting to Postgres
+- ✅ A running **PostgreSQL** database
+- ✅ Ingress routing for `/frontend` and `/api`
 
-- **Frontend**: Static HTML served by NGINX
-- **Backend**: Simple echo service (`hashicorp/http-echo`)
-- **Database**: PostgreSQL
-- **Ingress**: Route `/frontend` and `/backend` via Ingress
+---
 
-## 📦 How to Run Locally
+## 🧱 Architecture
 
-### 1. Start Minikube
+```
+Frontend (NGINX) <--calls-- Backend (Express.js) <--queries-- PostgreSQL
+        |                          |                        |
+     Ingress                   Service                  Persistent Pod
+```
+
+---
+
+## 📦 Components
+
+| Component | Tech                  | Description                              |
+|----------|------------------------|------------------------------------------|
+| Frontend | HTML + JS + NGINX      | Calls `/api/message`                     |
+| Backend  | Node.js + Express      | Connects to PostgreSQL                   |
+| Database | PostgreSQL 15          | Responds with static SQL message         |
+| Ingress  | Minikube + NGINX       | Routes traffic to services               |
+
+---
+
+## 🚀 Setup Instructions
+
+### 1. Install Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+
+---
+
+### 2. Start Minikube
 
 ```bash
 minikube start --driver=docker
-```
-
-### 2. Apply Manifests
-
-```bash
-kubectl apply -f k8s-manifests/frontend-configmap.yaml
-kubectl apply -f k8s-manifests/frontend.yaml
-kubectl apply -f k8s-manifests/backend.yaml
-kubectl apply -f k8s-manifests/db.yaml
-kubectl apply -f k8s-manifests/ingress.yaml
-```
-
-### 3. Enable Ingress (if not enabled)
-
-```bash
 minikube addons enable ingress
 ```
 
-### 4. Access in Browser
+---
+
+### 3. Build and Push Docker Images (locally or to registry)
+
+From project root:
+
+```bash
+# Frontend
+docker build -t kvinfo/frontend ./frontend
+
+# Backend
+docker build -t kvinfo/backend ./backend
+```
+
+If using local Docker:
+```bash
+minikube image load kvinfo/frontend
+minikube image load kvinfo/backend
+```
+
+---
+
+### 4. Deploy Kubernetes Resources
+
+```bash
+kubectl apply -f k8s-manifests/
+```
+
+---
+
+### 5. Set Local DNS for Ingress
 
 ```bash
 echo "$(minikube ip) kvinfo.local" | sudo tee -a /etc/hosts
 ```
 
-- [http://kvinfo.local/frontend](http://kvinfo.local/frontend)
-- [http://kvinfo.local/backend](http://kvinfo.local/backend)
+Then visit:
+- 🔗 http://kvinfo.local/frontend
+- 🔗 http://kvinfo.local/api/message
 
+---
 
+## 🧪 Teardown
 
-### 5. Tier down clean up everything
-
-Deletes the Minikube cluster
-Removes the kvinfo.local entry from /etc/hosts
-
-How to Use
 ```bash
-cd kvinfo-minikube-demo
 ./teardown.sh
 ```
 
-## 🚀 GitHub Actions
+---
 
-Included `.github/workflows/minikube.yml` runs the deployment inside a GitHub Actions CI pipeline using Minikube.
-
-## 📁 Folder Structure
+## 📂 Project Structure
 
 ```
 kvinfo-minikube-demo/
-├── k8s-manifests/
-│   ├── backend.yaml
-│   ├── db.yaml
-│   ├── frontend.yaml
-│   ├── frontend-configmap.yaml
-│   └── ingress.yaml
-├── .github/
-│   └── workflows/
-│       └── minikube.yml
+├── frontend/                 # Static React-like frontend
+├── backend/                  # Express + PostgreSQL API
+├── k8s-manifests/            # YAML manifests
+├── .github/workflows/        # CI pipeline (optional)
+├── setup.sh                  # One-command setup
+├── teardown.sh               # One-command cleanup
 └── README.md
 ```
+
+---
+
+## 🧠 Summary
+
+This project demonstrates a real-world Kubernetes setup with frontend/backend/database communication, CI/CD potential, and full local deployability using Minikube.
