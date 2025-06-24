@@ -7,7 +7,7 @@ minikube start --driver=docker
 echo "Configuring Docker to use Minikube's environment..."
 eval "$(minikube docker-env)"
 
-echo "Building Docker images..."
+echo "Building Docker images inside Minikube's Docker environment..."
 docker build -t kvinfo/frontend:latest ./frontend
 docker build -t kvinfo/backend:latest ./backend
 
@@ -29,8 +29,8 @@ echo "Applying Ingress manifest..."
 kubectl apply -f k8s-manifests/ingress.yaml
 
 echo "Waiting for deployments to become available..."
-kubectl wait --for=condition=available --timeout=180s deployment/frontend
-kubectl wait --for=condition=available --timeout=180s deployment/backend
+kubectl wait --for=condition=available --timeout=60s deployment/frontend
+kubectl wait --for=condition=available --timeout=60s deployment/backend
 
 echo "Configuring /etc/hosts entry for kvinfo.local..."
 MINIKUBE_IP=$(minikube ip)
