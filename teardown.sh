@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "🧹 Deleting Minikube cluster..."
+echo "Stopping and deleting Minikube cluster..."
 minikube delete
 
-echo "🧼 Removing /etc/hosts entry..."
+echo "Removing kvinfo.local entry from /etc/hosts..."
 sudo sed -i.bak '/kvinfo.local/d' /etc/hosts
 
-echo "✅ Teardown complete."
+echo "Cleanup complete."
