@@ -1,0 +1,56 @@
+# .github/workflows/deploy.yml
+name: Deploy to Kind
+
+on:
+  workflow_call:
+    inputs:
+      image_map:
+        required: true
+        type: string
+      manifests:
+        required: true
+        type: string  # comma-separated list of paths
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: helm/kind-action@v1.8.0
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Pull and load Docker images dynamically
+        run: |
+          echo '${{ inputs.image_map }}' > image-map.json
+          for name in $(jq -r 'keys[]' image-map.json); do
+            image=$(jq -r --arg name "$name" '.[$name]' image-map.json)
+            echo "📦 Pulling and loading $name image: $image"
+            docker pull "$image"
+            kind load docker-image "$image"
+          done
+
+      - name: Apply only specified manifests
+        run: |
+          IFS=',' read -ra FILES <<< "${{ inputs.manifests }}"
+          echo " Applying selected manifests:"
+          for file in "${FILES[@]}"; do
+            echo "→ $file"
+            kubectl apply -f "$file"
+          done
+
+      - name: Wait for deployments defined in image_map
+        run: |
+          echo "⏳ Waiting for deployments:"
+          for name in $(jq -r 'keys[]' image-map.json); do
+            echo "→ deployment/$name"
+            kubectl wait --for=condition=available --timeout=60s deployment/$name &
+          done
+          wait

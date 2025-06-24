@@ -1,0 +1,24 @@
+name: CI + Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  frontend:
+    uses: ./.github/workflows/frontend.yml
+
+  backend:
+    uses: ./.github/workflows/backend.yml
+
+  deploy:
+    needs: [frontend, backend]
+    uses: ./.github/workflows/deploy.yml
+    with:
+      image_map: >-
+        {
+          "frontend": "ghcr.io/${{ github.repository_owner }}/kvinfo-frontend:latest",
+          "backend": "ghcr.io/${{ github.repository_owner }}/kvinfo-backend:latest"
+        }
+      manifests: >-
+        k8s-manifests/db.yaml,k8s-manifests/backend.yaml,k8s-manifests/frontend.yaml,k8s-manifests/ingress.yaml

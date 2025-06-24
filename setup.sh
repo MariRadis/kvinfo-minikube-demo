@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+echo "🚀 Starting Minikube..."
+minikube start --driver=docker
+
 echo "🐳 Using Minikube Docker environment..."
 eval $(minikube docker-env)
 
@@ -9,9 +12,6 @@ docker build -t kvinfo/frontend ./frontend
 
 echo "🔨 Building backend image..."
 docker build -t kvinfo/backend ./backend
-
-echo "🚀 Starting Minikube..."
-minikube start --driver=docker
 
 echo "✅ Enabling Ingress addon..."
 minikube addons enable ingress
