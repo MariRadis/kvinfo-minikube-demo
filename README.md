@@ -1,4 +1,4 @@
-# KVInfoSysBund Minikube Demo (Full Stack)
+# Minikube Demo (Full Stack)
 
 > This project demonstrates a full-stack application deployed and tested in a Kubernetes environment using Minikube. It
 > includes automated setup/teardown scripts and a deployment structure that can be adapted for cloud environments like GKE
